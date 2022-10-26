@@ -3,14 +3,13 @@ include_once 'Dbh.php';
 session_start(); $validations = array(); $values = array(); 
 
 class UserAuth extends Dbh{
-    // private static $db;
 
     public function __construct(){
         $this->db = new Dbh();
     }
 
     public function register($fullnames, $email, $password, $confirmPassword, $country, $gender){
-        $values = ['fullnames' => $fullnames, 'email' => $email, 'password' => $password, 'confirmPassword' => $confirmPassword, 'country' => $country, 'gender' => $gender];
+        $values = ['fullnames' => $fullnames, 'email' => $email, 'password' => $password, 'confirmPassword' => $confirmPassword, 'country' => $country, 'gender' => $gender]; //for input fields in case of error
         $conn = $this->db->connect();
         if(!($this->confirmPasswordMatch($password, $confirmPassword))){
             $validations['passmatch'] = "Oops! Your passwords do not match.";
@@ -25,7 +24,7 @@ class UserAuth extends Dbh{
             }
             if(empty($validations)){
                 //sql successful
-                echo "<h3 style='color:green;'>Your registration was successful!</h3>";
+                echo "<h3 style='color:green;'>Your registration was successful! Please log in</h3>";
                 echo "<br>
                 <a href='forms/login.php'>Click here</a> if this page does not reload automatically in 5 seconds.
                 ";
@@ -36,7 +35,6 @@ class UserAuth extends Dbh{
         }else {
             $this->processValidation($validations, $values, 'forms/register.php');
         }
-
     }
 
     public function login($email, $password){
@@ -96,7 +94,7 @@ class UserAuth extends Dbh{
         }      
     }
 
-    public function checkEmailExists($email){
+    public function checkEmailExists($email){ 
         $conn = $this->db->connect();
         $sql = "SELECT * FROM Students WHERE email = '$email'";
         $result = $conn->query($sql);
