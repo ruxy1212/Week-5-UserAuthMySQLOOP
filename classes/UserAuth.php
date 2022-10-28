@@ -3,6 +3,7 @@ include_once 'Dbh.php';
 session_start(); $validations = array(); $values = array(); 
 
 class UserAuth extends Dbh{
+    public $db;
 
     public function __construct(){
         $this->db = new Dbh();
